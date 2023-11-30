@@ -36,7 +36,7 @@ def fill_folders_with_images(root_path, categories, limit_per_category=1):
             download_images(category, category_path, limit=limit_per_category)
 
 if __name__ == "__main__":
-    dataset_root = "/home/jakub/pytorch/dataset"  # Updated dataset root path with leading slash
+    dataset_root = "dataset"  # Updated dataset root path with leading slash
     categories = ["red", "blue", "green"]
     limit_per_category = 100  # You can adjust the limit as needed
 

@@ -30,9 +30,9 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-train_dataset = datasets.ImageFolder(root='/home/jakub/pytorch/dataset/train', transform=transform)
-val_dataset = datasets.ImageFolder(root='/home/jakub/pytorch/dataset/val', transform=transform)
-test_dataset = datasets.ImageFolder(root='/home/jakub/pytorch/dataset/test', transform=transform)
+train_dataset = datasets.ImageFolder(root='dataset/train', transform=transform)
+val_dataset = datasets.ImageFolder(root='dataset/val', transform=transform)
+test_dataset = datasets.ImageFolder(root='dataset/test', transform=transform)
 
 batch_size = 32
 num_classes = 10  # Adjust based on the number of color classes
