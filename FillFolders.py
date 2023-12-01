@@ -2,8 +2,9 @@ from bing_image_downloader import downloader
 import os
 import shutil
 
-def download_images(keyword, output_path, limit=100):
-    downloader.download(keyword, limit=limit, output_dir=output_path, adult_filter_off=True, force_replace=False)
+def download_images(keyword, output_path, limit=30):
+    downloader.download(keyword, limit=limit, output_dir=output_path, adult_filter_off=False, force_replace=False)
+
 
     # Move images from subdirectory to the desired location
     subdirectory = os.path.join(output_path, keyword)
@@ -37,7 +38,7 @@ def fill_folders_with_images(root_path, categories, limit_per_category=1):
 
 if __name__ == "__main__":
     dataset_root = "dataset"  # Updated dataset root path with leading slash
-    categories = ["red", "blue", "green"]
-    limit_per_category = 100  # You can adjust the limit as needed
+    categories = ["red", "blue", "green", "yellow", "orange", "purple", "brown", "pink", "gray", "black"]
+    limit_per_category = 30  # You can adjust the limit as needed
 
     fill_folders_with_images(dataset_root, categories, limit_per_category)

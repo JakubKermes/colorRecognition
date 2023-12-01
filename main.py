@@ -48,42 +48,57 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Training loop
-num_epochs = 10
+# main.py
 
-for epoch in range(num_epochs):
-    model.train()
-    for inputs, labels in train_loader:
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
+# ... (previous code)
 
-    # Validation loop
-    model.eval()
-    val_loss = 0.0
-    correct = 0
-    total = 0
-    with torch.no_grad():
-        for inputs, labels in val_loader:
+if __name__ == "__main__":
+    # Training loop
+    num_epochs = 10
+
+    for epoch in range(num_epochs):
+        model.train()
+        for inputs, labels in train_loader:
+            optimizer.zero_grad()
             outputs = model(inputs)
             loss = criterion(outputs, labels)
-            val_loss += loss.item()
+            loss.backward()
+            optimizer.step()
+
+        # Validation loop
+        model.eval()
+        val_loss = 0.0
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for inputs, labels in val_loader:
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
+                val_loss += loss.item()
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
+
+        print(f'Epoch {epoch+1}/{num_epochs}, Loss: {val_loss/len(val_loader)}, Accuracy: {100*correct/total}%')
+
+    torch.save(model.state_dict(), 'model.pth')
+
+    # Test the model
+    model.eval()
+    test_correct = 0
+    test_total = 0
+    with torch.no_grad():
+        for inputs, labels in test_loader:
+            outputs = model(inputs)
             _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
+            test_total += labels.size(0)
+            test_correct += (predicted == labels).sum().item()
 
-    print(f'Epoch {epoch+1}/{num_epochs}, Loss: {val_loss/len(val_loader)}, Accuracy: {100*correct/total}%')
+    print(f'Test Accuracy: {100*test_correct/test_total}%')
 
-# Test the model
+
+model = ColorRecognitionModel()
+model.load_state_dict(torch.load('model.pth'))
 model.eval()
-test_correct = 0
-test_total = 0
-with torch.no_grad():
-    for inputs, labels in test_loader:
-        outputs = model(inputs)
-        _, predicted = torch.max(outputs.data, 1)
-        test_total += labels.size(0)
-        test_correct += (predicted == labels).sum().item()
 
-print(f'Test Accuracy: {100*test_correct/test_total}%')
+
